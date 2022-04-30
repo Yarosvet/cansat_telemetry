@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QApplication
 
 
 def main():
-    # ser = SerialReader()
     app = QApplication(sys.argv)
     window = MainWindow()
     ser = SerialReader(window.update_press_temp_graph)
