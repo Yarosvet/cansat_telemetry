@@ -29,26 +29,26 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="PlotWidget" name="widget_3" native="true"/>
+         <widget class="PlotWidget" name="press_temp" native="true"/>
         </item>
         <item>
-         <widget class="PlotWidget" name="widget" native="true"/>
+         <widget class="PlotWidget" name="temp_time" native="true"/>
         </item>
         <item>
-         <widget class="PlotWidget" name="widget_2" native="true"/>
+         <widget class="PlotWidget" name="acc_time" native="true"/>
         </item>
        </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="PlotWidget" name="widget_6" native="true"/>
+         <widget class="PlotWidget" name="gas_time" native="true"/>
         </item>
         <item>
-         <widget class="PlotWidget" name="widget_5" native="true"/>
+         <widget class="PlotWidget" name="hum_time" native="true"/>
         </item>
         <item>
-         <widget class="PlotWidget" name="widget_4" native="true"/>
+         <widget class="PlotWidget" name="bright_time" native="true"/>
         </item>
        </layout>
       </item>

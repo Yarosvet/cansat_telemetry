@@ -8,6 +8,8 @@ def main():
     # ser = SerialReader()
     app = QApplication(sys.argv)
     window = MainWindow()
+    ser = SerialReader(window.update_press_temp_graph)
+    ser.start_imitation_rx()
     window.show()
     sys.exit(app.exec_())
 
