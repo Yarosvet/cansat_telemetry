@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import uic
+from pyqtgraph import PlotWidget, plot
+import pyqtgraph
 
 
 class MainWindow(QMainWindow):
