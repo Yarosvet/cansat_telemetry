@@ -52,7 +52,7 @@ class SerialReader:
 
     def update_from_str(self, s):  # "1000 101325 0 0 -9 25.5 101325 0 0 -9 25.5 9 9 9 0 0 200 3.75 46 500 600"
         cc = list(map(float, s.split()))
-        self.time_start = cc[0]
+        self.time_start = cc[0] / 1000
         self.pressure = cc[1]
         self.acc_ax = cc[2]
         self.acc_ay = cc[3]
