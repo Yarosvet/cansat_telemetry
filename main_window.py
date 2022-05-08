@@ -15,7 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
-        MainWindow.resize(1322, 758)
+        MainWindow.resize(1335, 758)
         MainWindow.setStyleSheet("background-color: rgb(63, 63, 63);r")
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         MainWindow.setTabShape(QtWidgets.QTabWidget.Triangular)
@@ -374,7 +374,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "CanSat Telemetry Receiver"))
         self.label.setText(_translate("MainWindow", "Pressure"))
         self.pressure_lab.setText(_translate("MainWindow", "0"))
         self.label_4.setText(_translate("MainWindow", "Pressure IMU"))

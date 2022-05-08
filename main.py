@@ -2,14 +2,16 @@ from window import MainWindow
 from rx_serial import SerialReader
 import sys
 from PyQt5.QtWidgets import QApplication
+from dialog import DeviceDialog
 
 
 def main():
     app = QApplication(sys.argv)
     ser = SerialReader()
-    ser.start_imitation_rx()
     window = MainWindow(ser)
-    window.show()
+    dialog = DeviceDialog(ser, window, imitation_mode=True)
+    dialog.show()
+    # window.show()
     sys.exit(app.exec_())
 
 

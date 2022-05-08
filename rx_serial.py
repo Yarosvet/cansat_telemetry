@@ -8,6 +8,8 @@ from math import sqrt
 
 class SerialReader:
     def __init__(self):
+        self.com_port = "COM11"
+        self.serial_port = 9600
         # Values
         self.time_start = 0
         self.pressure = 0
@@ -90,12 +92,13 @@ class SerialReader:
         self.accelerate_time_imu_data.append([self.time_start, mod_acc_imu])
 
     def rx(self):
-        ser = serial.Serial(COM_PORT, SERIAL_PORT)
+        ser = serial.Serial(self.com_port, self.serial_port)
         while True:
             self.update_from_str(str(ser.readline()))
 
     def imitate_rx(self):
         time_start = 0
+        print(self.com_port, self.serial_port)
         while True:
             time_start += 32
             s = " ".join(map(str, [time_start, randint(90000, 102000), randint(-9, 0), randint(-9, 0), randint(-9, 0),

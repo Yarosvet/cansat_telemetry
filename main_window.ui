@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>CanSat Telemetry Receiver</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(63, 63, 63);r</string>
