@@ -6,9 +6,9 @@ from PyQt5.QtWidgets import QApplication
 
 def main():
     app = QApplication(sys.argv)
-    window = MainWindow()
-    ser = SerialReader(window.update_press_temp_graph)
+    ser = SerialReader()
     ser.start_imitation_rx()
+    window = MainWindow(ser)
     window.show()
     sys.exit(app.exec_())
 
