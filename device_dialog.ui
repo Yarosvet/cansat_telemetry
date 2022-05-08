@@ -401,6 +401,10 @@
   <property name="windowTitle">
    <string>Select device</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/img/img/icon.ico</normaloff>:/img/img/icon.ico</iconset>
+  </property>
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
@@ -567,9 +571,9 @@ font: 75 bold 12pt &quot;Consolas&quot;;</string>
          <colorrole role="PlaceholderText">
           <brush brushstyle="NoBrush">
            <color alpha="128">
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
+            <red>0</red>
+            <green>208</green>
+            <blue>16</blue>
            </color>
           </brush>
          </colorrole>
@@ -751,9 +755,9 @@ font: 75 bold 12pt &quot;Consolas&quot;;</string>
          <colorrole role="PlaceholderText">
           <brush brushstyle="NoBrush">
            <color alpha="128">
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
+            <red>0</red>
+            <green>208</green>
+            <blue>16</blue>
            </color>
           </brush>
          </colorrole>
@@ -800,6 +804,8 @@ font: 75 bold 12pt &quot;Consolas&quot;;</string>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

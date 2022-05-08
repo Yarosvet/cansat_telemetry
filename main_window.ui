@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>CanSat Telemetry Receiver</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/img/img/icon.ico</normaloff>:/img/img/icon.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(63, 63, 63);r</string>
   </property>
