@@ -3,6 +3,7 @@ from config import *
 from time import sleep
 from threading import Thread
 from random import randint
+from math import sqrt
 
 
 class SerialReader:
@@ -30,8 +31,16 @@ class SerialReader:
         self.methane = 0
         self.hydrogen = 0
         # Data sets
-        self.press_data = []
-        self.temp_data = []
+        self.presstemp_data = []
+        self.presstemp_imu_data = []
+        self.temptime_data = []
+        self.temptime_imu_data = []
+        self.hydrogen_time_data = []
+        self.methane_time_data = []
+        self.humidity_time_data = []
+        self.brightness_time_data = []
+        self.accelerate_time_data = []
+        self.accelerate_time_imu_data = []
 
     def start_rx(self):
         self.rx_thread = Thread(target=self.rx, name="rxThread", daemon=True)
@@ -64,6 +73,21 @@ class SerialReader:
         self.humidity = cc[18]
         self.methane = cc[19]
         self.hydrogen = cc[20]
+        # Updating datasets
+        self.presstemp_data.append([self.temperature, self.pressure])
+        self.presstemp_data.sort()
+        self.presstemp_imu_data.append([self.temperature_imu, self.pressure_imu])
+        self.presstemp_imu_data.sort()
+        self.temptime_data.append([self.time_start, self.temperature])
+        self.temptime_imu_data.append([self.time_start, self.temperature_imu])
+        self.hydrogen_time_data.append([self.time_start, self.hydrogen])
+        self.methane_time_data.append([self.time_start, self.methane])
+        self.humidity_time_data.append([self.time_start, self.humidity])
+        self.brightness_time_data.append([self.time_start, self.brightness])
+        mod_acc = sqrt(self.acc_ax ** 2 + self.acc_ay ** 2 + self.acc_az ** 2)
+        self.accelerate_time_data.append([self.time_start, mod_acc])
+        mod_acc_imu = sqrt(self.acc_ax_imu ** 2 + self.acc_ay_imu ** 2 + self.acc_az_imu ** 2)
+        self.accelerate_time_imu_data.append([self.time_start, mod_acc_imu])
 
     def rx(self):
         ser = serial.Serial(COM_PORT, SERIAL_PORT)
@@ -79,8 +103,4 @@ class SerialReader:
                                    randint(-9, 0), randint(-90, 250) / 10, 9, 9, 9, randint(0, 15), randint(0, 15),
                                    randint(0, 15), randint(100, 500) / 100, randint(10, 40), 500, 400]))
             self.update_from_str(s)
-            self.press_data.append(self.pressure)
-            self.press_data.sort()
-            self.temp_data.append(self.temperature)
-            self.temp_data.sort()
             sleep(0.032)
