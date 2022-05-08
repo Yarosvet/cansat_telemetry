@@ -84,9 +84,9 @@ class SerialReader:
         self.methane_time_data.append([self.time_start, self.methane])
         self.humidity_time_data.append([self.time_start, self.humidity])
         self.brightness_time_data.append([self.time_start, self.brightness])
-        mod_acc = sqrt(self.acc_ax ** 2 + self.acc_ay ** 2 + self.acc_az ** 2)
+        mod_acc = sqrt(abs(self.acc_ax ** 2 + self.acc_ay ** 2 + self.acc_az ** 2))
         self.accelerate_time_data.append([self.time_start, mod_acc])
-        mod_acc_imu = sqrt(self.acc_ax_imu ** 2 + self.acc_ay_imu ** 2 + self.acc_az_imu ** 2)
+        mod_acc_imu = sqrt(abs(self.acc_ax_imu ** 2 + self.acc_ay_imu ** 2 + self.acc_az_imu ** 2))
         self.accelerate_time_imu_data.append([self.time_start, mod_acc_imu])
 
     def rx(self):

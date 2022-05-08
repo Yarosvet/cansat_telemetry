@@ -6,6 +6,7 @@ from main_window import Ui_MainWindow
 from config import *
 from rx_serial import SerialReader
 import numpy as np
+from math import sqrt
 
 
 def first_items(l):
@@ -37,7 +38,7 @@ class MainWindow(QMainWindow):
         self.ui.hum_time.setLabels(left=("Humidity", "%"), bottom=("Time", "Sec"))
         self.ui.bright_time.setLabels(left=("Brightness", "V"), bottom=("Time", "Sec"))
         # Pressure - temperature
-        pen_sensor = pg.mkPen(color=(00, 208, 10), width=2, style=Qt.SolidLine)
+        pen_sensor = pg.mkPen(color=(00, 208, 16), width=2, style=Qt.SolidLine)
         pen_imu = pg.mkPen(color=(255, 218, 0), width=2, style=Qt.SolidLine)
         pen_methane = pg.mkPen(color=(255, 24, 0), width=2, style=Qt.SolidLine)
         pen_hydrogen = pg.mkPen(color=(7, 118, 160), width=2, style=Qt.SolidLine)
@@ -57,6 +58,13 @@ class MainWindow(QMainWindow):
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
         self.timer_update.start(INTERVAL_GRAPHS_UPDATE)
 
+    def update_realtime_value(self, label, text):
+        if float(text) >= float(label.text()):
+            label.setStyleSheet("color: rgb(0, 208, 16);")
+        else:
+            label.setStyleSheet("color: rgb(255, 61, 51);")
+        label.setText(text)
+
     def update_graphs(self):
         self.press_temp_curve.setData(*xy(self.serial.presstemp_data))
         self.press_temp_imu_curve.setData(*xy(self.serial.presstemp_imu_data))
@@ -68,3 +76,17 @@ class MainWindow(QMainWindow):
         self.brightness_curve.setData(*xy(self.serial.brightness_time_data))
         self.accelerate_curve.setData(*xy(self.serial.accelerate_time_data))
         self.accelerate_imu_curve.setData(*xy(self.serial.accelerate_time_imu_data))
+        # Updating real-time values
+        self.update_realtime_value(self.ui.pressure_lab, str(int(self.serial.pressure)))
+        self.update_realtime_value(self.ui.pressure_imu_lab, str(int(self.serial.pressure_imu)))
+        self.update_realtime_value(self.ui.temperature_lab, str(self.serial.temperature))
+        self.update_realtime_value(self.ui.temperature_imu_lab, str(self.serial.temperature_imu))
+        self.update_realtime_value(self.ui.humidity_lab, str(int(self.serial.humidity)))
+        acc_mod = round(sqrt(abs(self.serial.acc_ax ** 2 + self.serial.acc_ay ** 2 + self.serial.acc_az)) * 10) / 10
+        acc_mod_imu = round(
+            sqrt(abs(self.serial.acc_ax_imu ** 2 + self.serial.acc_ay_imu ** 2 + self.serial.acc_az_imu)) * 10) / 10
+        self.update_realtime_value(self.ui.acceleration_lab, str(acc_mod))
+        self.update_realtime_value(self.ui.acceleration_imu_lab, str(acc_mod_imu))
+        self.update_realtime_value(self.ui.hydrogen_lab, str(int(self.serial.hydrogen)))
+        self.update_realtime_value(self.ui.methane_lab, str(int(self.serial.methane)))
+        self.update_realtime_value(self.ui.brightness_lab, str(self.serial.brightness))
