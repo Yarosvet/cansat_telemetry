@@ -9,7 +9,7 @@ def main():
     app = QApplication(sys.argv)
     ser = SerialReader()
     window = MainWindow(ser)
-    dialog = DeviceDialog(ser, window, imitation_mode=True)
+    dialog = DeviceDialog(ser, window)
     dialog.show()
     # window.show()
     sys.exit(app.exec_())
