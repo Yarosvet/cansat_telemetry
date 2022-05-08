@@ -353,6 +353,40 @@ font: 75 bold 12pt &quot;Consolas&quot;;</string>
               </item>
              </layout>
             </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_15">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 255, 255);
+font: 75 bold 12pt &quot;Consolas&quot;;</string>
+                </property>
+                <property name="text">
+                 <string>TX time</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="tx_time_lab">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(0, 208, 16);</string>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </item>
           <item>
@@ -569,6 +603,40 @@ font: 75 bold 12pt &quot;Consolas&quot;;</string>
               </item>
               <item>
                <widget class="QLabel" name="brightness_lab">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(0, 208, 16);</string>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_16">
+              <item>
+               <widget class="QLabel" name="label_7">
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(255, 255, 255);
+font: 75 bold 12pt &quot;Consolas&quot;;</string>
+                </property>
+                <property name="text">
+                 <string>Magnetic</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="magnetic_lab">
                 <property name="font">
                  <font>
                   <weight>75</weight>

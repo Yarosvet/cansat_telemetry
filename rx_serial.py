@@ -98,7 +98,6 @@ class SerialReader:
 
     def imitate_rx(self):
         time_start = 0
-        print(self.com_port, self.serial_port)
         while True:
             time_start += 32
             s = " ".join(map(str, [time_start, randint(90000, 102000), randint(-9, 0), randint(-9, 0), randint(-9, 0),

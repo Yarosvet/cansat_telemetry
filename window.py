@@ -7,6 +7,7 @@ from config import *
 from rx_serial import SerialReader
 import numpy as np
 from math import sqrt
+from datetime import timedelta
 
 
 def first_items(l):
@@ -59,11 +60,13 @@ class MainWindow(QMainWindow):
         self.timer_update.start(INTERVAL_GRAPHS_UPDATE)
 
     def update_realtime_value(self, label, text):
+        label.setText(text)
+        if not text.isdigit():
+            return
         if float(text) >= float(label.text()):
             label.setStyleSheet("color: rgb(0, 208, 16);")
         else:
             label.setStyleSheet("color: rgb(255, 61, 51);")
-        label.setText(text)
 
     def update_graphs(self):
         self.press_temp_curve.setData(*xy(self.serial.presstemp_data))
@@ -90,3 +93,7 @@ class MainWindow(QMainWindow):
         self.update_realtime_value(self.ui.hydrogen_lab, str(int(self.serial.hydrogen)))
         self.update_realtime_value(self.ui.methane_lab, str(int(self.serial.methane)))
         self.update_realtime_value(self.ui.brightness_lab, str(self.serial.brightness))
+        tx_time = timedelta(seconds=round(self.serial.time_start))
+        self.update_realtime_value(self.ui.tx_time_lab, str(tx_time))
+        magnetic_mod = round(sqrt(abs(self.serial.mag_mx ** 2 + self.serial.mag_my ** 2 + self.serial.mag_mz ** 2)))
+        self.update_realtime_value(self.ui.magnetic_lab, str(magnetic_mod))
