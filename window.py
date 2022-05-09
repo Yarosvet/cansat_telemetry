@@ -60,13 +60,14 @@ class MainWindow(QMainWindow):
         self.timer_update.start(INTERVAL_GRAPHS_UPDATE)
 
     def update_realtime_value(self, label, text):
-        label.setText(text)
-        if not text.isdigit():
+        if not text.replace(".", "").replace("-", "").isdigit():
+            label.setText(text)
             return
         if float(text) >= float(label.text()):
-            label.setStyleSheet("color: rgb(0, 208, 16);")
+            label.setStyleSheet("color: rgb(0, 208, 16);\nfont: 75 bold 12pt \"Consolas\";")
         else:
-            label.setStyleSheet("color: rgb(255, 61, 51);")
+            label.setStyleSheet("color: rgb(255, 61, 51);\nfont: 75 bold 12pt \"Consolas\";")
+        label.setText(text)
 
     def update_graphs(self):
         self.press_temp_curve.setData(*xy(self.serial.presstemp_data))
