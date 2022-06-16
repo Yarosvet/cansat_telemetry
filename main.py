@@ -9,6 +9,7 @@ def main():
     app = QApplication(sys.argv)
     ser = SerialReader()
     window = MainWindow(ser)
+    ser.eventClose = window.close
     dialog = DeviceDialog(ser, window)
     dialog.show()
     # window.show()

@@ -8,6 +8,8 @@ from rx_serial import SerialReader
 import numpy as np
 from math import sqrt
 from datetime import timedelta
+import vtkplotlib as vpl
+from stl.mesh import Mesh
 
 
 def first_items(l):
@@ -38,7 +40,6 @@ class MainWindow(QMainWindow):
         self.ui.gas_time.setLabels(left=("Gas concentration", "ppm"), bottom=("Time", "Sec"))
         self.ui.hum_time.setLabels(left=("Humidity", "%"), bottom=("Time", "Sec"))
         self.ui.bright_time.setLabels(left=("Brightness", "V"), bottom=("Time", "Sec"))
-        # Pressure - temperature
         pen_sensor = pg.mkPen(color=(00, 208, 16), width=2, style=Qt.SolidLine)
         pen_imu = pg.mkPen(color=(255, 218, 0), width=2, style=Qt.SolidLine)
         pen_methane = pg.mkPen(color=(255, 24, 0), width=2, style=Qt.SolidLine)
@@ -54,7 +55,9 @@ class MainWindow(QMainWindow):
         self.accelerate_curve = self.ui.acc_time.plot(name="Acceleration module", pen=pen_sensor)
         self.accelerate_imu_curve = self.ui.acc_time.plot(name="Acceleration module Imu", pen=pen_imu)
         self.timer_update = QTimer()
-        self.timer_update.timeout.connect(self.update_graphs)
+        self.timer_update.timeout.connect(self.update_values)
+        # self.mesh_figure = Mesh.from_file("3d/base.stl")
+        # vpl.mesh_plot(self.mesh_figure, fig=self.ui.inclination_widget)
 
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
         self.timer_update.start(INTERVAL_GRAPHS_UPDATE)
@@ -69,7 +72,8 @@ class MainWindow(QMainWindow):
             label.setStyleSheet("color: rgb(255, 61, 51);\nfont: 75 bold 12pt \"Consolas\";")
         label.setText(text)
 
-    def update_graphs(self):
+    def update_values(self):
+        # Updating graphs
         self.press_temp_curve.setData(*xy(self.serial.presstemp_data))
         self.press_temp_imu_curve.setData(*xy(self.serial.presstemp_imu_data))
         self.temp_time_curve.setData(*xy(self.serial.temptime_data))

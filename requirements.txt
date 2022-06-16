@@ -1,4 +1,6 @@
 PyQt5
-pyqt-tools
 pyqtgraph
 pyserial
+vtkplotlib
+numpy-stl
+pygame
