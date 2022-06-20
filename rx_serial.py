@@ -1,9 +1,12 @@
+import csv
+
 import serial
 from config import *
 from time import sleep
 from threading import Thread
 from random import randint
 from math import sqrt
+from datetime import datetime
 
 
 class SerialReader:
@@ -46,6 +49,7 @@ class SerialReader:
         self.accelerate_time_data = []
         self.accelerate_time_imu_data = []
         self.eventClose = None
+        self.packets = []
 
     def start_rx(self):
         self.rx_thread = Thread(target=self.rx, name="rxThread", daemon=True)
@@ -57,54 +61,79 @@ class SerialReader:
 
     def update_from_str(self, s):
         kvalues = dict()
+        packet = {}
         for el in s.split():
             kvalues[el.split("=")[0]] = float(el.split("=")[1])
         if "time" in kvalues.keys():
             self.time_start = kvalues["time"]
+            packet["time"] = kvalues["time"]
         if "press" in kvalues.keys():
             self.pressure = kvalues["press"]
+            packet["pressure"] = kvalues["press"]
         if "acc_ax" in kvalues.keys():
             self.acc_ax = kvalues["acc_ax"]
+            packet["acc_ax"] = kvalues["acc_ax"]
         if "acc_ay" in kvalues.keys():
             self.acc_ay = kvalues["acc_ay"]
+            packet["acc_ay"] = kvalues["acc_ay"]
         if "acc_az" in kvalues.keys():
             self.acc_az = kvalues["acc_az"]
+            packet["acc_az"] = kvalues["acc_az"]
         if "temp" in kvalues.keys():
             self.temperature = kvalues["temp"]
+            packet["temperature"] = kvalues["temp"]
         if "press_imu" in kvalues.keys():
             self.pressure_imu = kvalues["press_imu"]
+            packet["pressure_imu"] = kvalues["press_imu"]
         if "acc_ax_imu" in kvalues.keys():
             self.acc_ax_imu = kvalues["acc_ax_imu"]
+            packet["acc_ax_imu"] = kvalues["acc_ax_imu"]
         if "acc_ay_imu" in kvalues.keys():
             self.acc_ay_imu = kvalues["acc_ay_imu"]
+            packet["acc_ay_imu"] = kvalues["acc_ay_imu"]
         if "acc_az_imu" in kvalues.keys():
             self.acc_az_imu = kvalues["acc_az_imu"]
+            packet["acc_az_imu"] = kvalues["acc_az_imu"]
         if "temp_imu" in kvalues.keys():
             self.temperature_imu = kvalues["temp_imu"]
+            packet["temperature_imu"] = kvalues["temp_imu"]
         if "mag_mx" in kvalues.keys():
             self.mag_mx = kvalues["mag_mx"]
+            packet["mag_mx"] = kvalues["mag_mx"]
         if "mag_my" in kvalues.keys():
             self.mag_my = kvalues["mag_my"]
+            packet["mag_my"] = kvalues["mag_my"]
         if "mag_mz" in kvalues.keys():
             self.mag_mz = kvalues["mag_mz"]
+            packet["mag_mz"] = kvalues["mag_mz"]
         if "gyr_x" in kvalues.keys():
             self.gyr_x = kvalues["gyr_x"]
+            packet["gyr_x"] = kvalues["gyr_x"]
         if "gyr_y" in kvalues.keys():
             self.gyr_y = kvalues["gyr_y"]
+            packet["gyr_y"] = kvalues["gyr_y"]
         if "gyr_z" in kvalues.keys():
             self.gyr_z = kvalues["gyr_z"]
+            packet["gyr_z"] = kvalues["gyr_z"]
         if "bright" in kvalues.keys():
             self.brightness = kvalues["bright"]
+            packet["brightness"] = kvalues["bright"]
         if "hum" in kvalues.keys():
             self.humidity = kvalues["hum"]
+            packet["humidity"] = kvalues["hum"]
         if "methane" in kvalues.keys():
             self.methane = kvalues["methane"]
+            packet["methane"] = kvalues["methane"]
         if "hydrogen" in kvalues.keys():
             self.hydrogen = kvalues["hydrogen"]
+            packet["hydrogen"] = kvalues["hydrogen"]
         if "gps_lat" in kvalues.keys():
             self.gps_lat = kvalues["gps_lat"]
+            packet["gps_lat"] = kvalues["gps_lat"]
         if "gps_lon" in kvalues.keys():
             self.gps_lon = kvalues["gps_lon"]
+            packet["gps_lon"] = kvalues["gps_lon"]
+        self.packets.append(packet)
         # Updating datasets
         self.presstemp_data.append([self.temperature, self.pressure])
         self.presstemp_data.sort()
@@ -148,3 +177,14 @@ class SerialReader:
                                    "gps_lon=" + str(36 + randint(1, 99) / 100)]))
             self.update_from_str(s)
             sleep(0.032)
+
+    def export_data(self):
+        filename = datetime.now().strftime("%y_%m_%d-%H:%M:%S") + ".csv"
+        with open(filename, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=["time", "pressure", "acc_ax", "acc_ay", "acc_az", "temperature",
+                                                   "pressure_imu", "acc_ax_imu", "acc_ay_imu", "acc_az_imu",
+                                                   "temperature_imu", "mag_mx", "mag_my", "mag_mz", "gyr_x", "gyr_y",
+                                                   "gyr_z", "brightness", "humidity", "methane", "hydrogen", "gps_lat",
+                                                   "gps_lon"])
+            writer.writeheader()
+            writer.writerows(self.packets)

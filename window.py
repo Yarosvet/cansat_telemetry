@@ -62,7 +62,11 @@ class MainWindow(QMainWindow):
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
         self.timer_update.start(INTERVAL_GRAPHS_UPDATE)
 
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        self.serial.export_data()
+
     def update_realtime_value(self, label, text):
+        self.serial.time_start += 0.035
         if not text.replace(".", "").replace("-", "").isdigit():
             label.setText(text)
             return
