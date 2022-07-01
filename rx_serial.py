@@ -116,8 +116,8 @@ class SerialReader:
             self.gyr_z = kvalues["gyr_z"]
             packet["gyr_z"] = kvalues["gyr_z"]
         if "bright" in kvalues.keys():
-            self.brightness = kvalues["bright"]
-            packet["brightness"] = kvalues["bright"]
+            self.brightness = kvalues["bright"] / 10
+            packet["brightness"] = kvalues["bright"] / 10
         if "hum" in kvalues.keys():
             self.humidity = kvalues["hum"]
             packet["humidity"] = kvalues["hum"]
