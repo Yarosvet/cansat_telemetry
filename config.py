@@ -1,2 +1,3 @@
 SERIAL_PORT = 9600
 INTERVAL_GRAPHS_UPDATE = 500
+DB_FILE = "data/maptiles.sqlite"

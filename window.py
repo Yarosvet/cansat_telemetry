@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow
+import math
+
+from PyQt5.QtWidgets import QMainWindow, QGraphicsScene, QGraphicsPixmapItem
 import pyqtgraph as pg
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5 import QtGui
@@ -8,8 +10,7 @@ from rx_serial import SerialReader
 import numpy as np
 from math import sqrt
 from datetime import timedelta
-import vtkplotlib as vpl
-from stl.mesh import Mesh
+from map import Map, num2deg, deg2num
 
 
 def first_items(l):
@@ -27,6 +28,7 @@ def xy(l):
 class MainWindow(QMainWindow):
     def __init__(self, serial: SerialReader):
         super().__init__()
+        self.map = Map()
         self.serial = serial
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -56,14 +58,66 @@ class MainWindow(QMainWindow):
         self.accelerate_imu_curve = self.ui.acc_time.plot(name="Acceleration module Imu", pen=pen_imu)
         self.timer_update = QTimer()
         self.timer_update.timeout.connect(self.update_values)
-        # self.mesh_figure = Mesh.from_file("3d/base.stl")
-        # vpl.mesh_plot(self.mesh_figure, fig=self.ui.inclination_widget)
+        self.map_scene = QGraphicsScene()
+        self.map_pixmap = QGraphicsPixmapItem()
+        self.map_scene.addItem(self.map_pixmap)
+        self.ui.map_widget.setScene(self.map_scene)
+        self.ui.map_widget.mousePressEvent = self.mpressed
+        self.ui.map_widget.mouseMoveEvent = self.mmove
+        self.ui.map_widget.mouseReleaseEvent = self.mrelease
+        self.ui.map_widget.wheelEvent = self.mwheel
+        self.ui.map_widget.keyPressEvent = self.mkeyboard
+        self.mouse_caught = None
+        self.current_zoom = 7
+        self.current_tile = (77, 40)
+        self.map_pixmap.setPixmap(self.map.getImageCluster(77, 40, self.current_zoom,
+                                                           self.ui.map_widget.contentsRect().width(),
+                                                           self.ui.map_widget.contentsRect().height()).toqpixmap())
 
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
         self.timer_update.start(INTERVAL_GRAPHS_UPDATE)
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.serial.export_data()
+
+    def mpressed(self, event):
+        x, y = event.pos().x(), event.pos().y()
+        self.mouse_caught = (x, y)
+
+    def mmove(self, event):
+        if self.mouse_caught:
+            if (event.pos().x() - self.mouse_caught[0]) / 256 >= 0:
+                delta_x = -math.ceil((event.pos().x() - self.mouse_caught[0]) / 256)
+                rev_x = -(event.pos().x() - self.mouse_caught[0]) % 256
+            else:
+                delta_x = -math.floor((event.pos().x() - self.mouse_caught[0]) / 256)
+            if (event.pos().y() - self.mouse_caught[1]) / 256 >= 0:
+                delta_y = -math.ceil((event.pos().y() - self.mouse_caught[1]) / 256)
+            else:
+                delta_y = -math.floor((event.pos().y() - self.mouse_caught[1]) / 256)
+            self.current_tile = (delta_x + self.current_tile[0], delta_y + self.current_tile[1])
+            self.map_pixmap.setPixmap(
+                self.map.getImageCluster(self.current_tile[0], self.current_tile[1], self.current_zoom,
+                                         self.ui.map_widget.contentsRect().width(),
+                                         self.ui.map_widget.contentsRect().height()).toqpixmap())
+
+    def mrelease(self, event):
+        self.mouse_caught = None
+
+    def mwheel(self, event):
+        current_deg = num2deg(self.current_tile[0], self.current_tile[1], self.current_zoom)
+        if event.angleDelta().y() > 0 and self.current_zoom < 19:
+            self.current_zoom += 1
+        elif event.angleDelta().y() < 0 and self.current_zoom > 2:
+            self.current_zoom -= 1
+        self.current_tile = deg2num(current_deg[0], current_deg[1], self.current_zoom)
+        self.map_pixmap.setPixmap(
+            self.map.getImageCluster(self.current_tile[0], self.current_tile[1], self.current_zoom,
+                                     self.ui.map_widget.contentsRect().width(),
+                                     self.ui.map_widget.contentsRect().height()).toqpixmap())
+
+    def mkeyboard(self, event):
+        pass
 
     def update_realtime_value(self, label, text):
         self.serial.time_start += 0.035

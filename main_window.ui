@@ -103,6 +103,16 @@
             </property>
            </widget>
           </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_19"/>
+            </item>
+           </layout>
+          </item>
          </layout>
         </item>
         <item>
@@ -801,7 +811,7 @@ font: 75 bold 12pt &quot;Consolas&quot;;</string>
 font: 75 bold 12pt &quot;Consolas&quot;;</string>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="map_tab">
            <attribute name="title">
@@ -811,26 +821,19 @@ font: 75 bold 12pt &quot;Consolas&quot;;</string>
             <item row="0" column="0">
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <item>
-               <widget class="QGraphicsView" name="graphicsView">
+               <widget class="QGraphicsView" name="map_widget">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="mouseTracking">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
              </layout>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="inclination_tab">
-           <attribute name="title">
-            <string>Inclination</string>
-           </attribute>
-           <layout class="QGridLayout" name="gridLayout_3">
-            <item row="0" column="0">
-             <layout class="QVBoxLayout" name="verticalLayout_7"/>
             </item>
            </layout>
           </widget>
