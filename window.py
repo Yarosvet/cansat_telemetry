@@ -66,7 +66,6 @@ class MainWindow(QMainWindow):
         self.serial.export_data()
 
     def update_realtime_value(self, label, text):
-        self.serial.time_start += 0.035
         if not text.replace(".", "").replace("-", "").isdigit():
             label.setText(text)
             return
